@@ -1,0 +1,69 @@
+name: 'Copy Files to Another Repository'
+description: 'GitHub Action that copies some files, described by a string pattern, into another repository.'
+
+inputs:
+  pattern: 
+    description: 'The string pattern to match on files you want to push'
+    required: true
+
+  dst_repo:
+    description: 'The destination repository.'
+    required: true
+
+  dst_dir:
+    description: 'The destination directory.'
+    required: true
+
+  dst_branch:
+    description: 'The destination branch.'
+    required: true
+    default: 'main'
+
+  commit_msg:
+    description: 'The commit message.'
+    required: true
+
+  user_name:
+    description: 'The user that is pushing.'
+    required: true
+
+  user_email:
+    description: 'The user that is pushing.'
+    required: true
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Find All Matching Files
+      shell: bash
+      run: find ./ -type f -name "${{inputs.pattern}}" >> files.txt
+    
+    - name: Create Temporary Directory
+      shell: bash
+      run: CLONE_DIR=$(mktemp -d)
+
+    - name: Clone The Destination Repository
+      shell: bash
+      run: | 
+        git config --global user.name "${{inputs.user_name}}" 
+        git config --global user.email "${{inputs.user_email}}" 
+        git clone --single-branch --branch ${{inputs.dst_branch}} "https://x-access-token:${API_TOKEN_GITHUB}@github.com/${{inputs.dst_repo}}.git" "${CLONE_DIR}"
+
+    - name: Copy The Selected Files
+      shell: bash
+      run: |
+        while read file; do
+          cp file ${CLONE_DIR}/${{inputs.dst_dir}}
+        done < files.txt
+        rm files.txt
+
+    - name: Commit
+      shell: bash
+      run: |
+        cd ${CLONE_DIR}
+        git add .
+        if git status | grep -q "Changes to be committed"
+        then
+          git commit -m "${{inputs.commit_msg}}"
+          git push -u origin HEAD:"${{inputs.dst_branch}}"
+        fi
