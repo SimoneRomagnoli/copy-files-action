@@ -43,14 +43,14 @@ runs:
       id: clone-dir
       run: |
         DIR_NAME=$(mktemp -d)
-        echo '::set-output name=CLONE_DIR::${DIR_NAME}'
+        echo '::set-output name=CLONE_DIR::$DIR_NAME'
 
     - name: Clone The Destination Repository
       shell: bash
       run: | 
         git config --global user.name "${{inputs.user_name}}" 
         git config --global user.email "${{inputs.user_email}}" 
-        git clone --single-branch --branch ${{inputs.dst_branch}} "https://x-access-token:${API_TOKEN_GITHUB}@github.com/${{inputs.dst_repo}}.git" "${{ steps.clone-dir.outputs.CLONE_DIR }}"
+        git clone --single-branch --branch ${{inputs.dst_branch}} "https://x-access-token:$API_TOKEN_GITHUB@github.com/${{inputs.dst_repo}}.git" ${{ steps.clone-dir.outputs.CLONE_DIR }}
 
     - name: Copy The Selected Files
       shell: bash
