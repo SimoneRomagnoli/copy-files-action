@@ -56,7 +56,7 @@ runs:
       shell: bash
       run: |
         while read file; do
-          cp file ${{ steps.clone-dir.outputs.CLONE_DIR }}/${{inputs.dst_dir}}
+          cp $file ${{ steps.clone-dir.outputs.CLONE_DIR }}/${{inputs.dst_dir}}/
         done < files.txt
         rm files.txt
 
