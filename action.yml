@@ -43,7 +43,7 @@ runs:
       id: clone-dir
       run: |
         DIR_NAME=$(mktemp -d)
-        echo '::set-output name=CLONE_DIR::$DIR_NAME'
+        echo "::set-output name=CLONE_DIR::$DIR_NAME"
 
     - name: Clone The Destination Repository
       shell: bash
