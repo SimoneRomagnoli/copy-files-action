@@ -44,3 +44,15 @@ jobs:
 * commit_msg: Your custom commit message
 * user_name: The user that is performing the push operation
 * user_email: The user's email
+
+## License
+
+The scripts and documentation in this project are released under the [MIT License](https://github.com/SimoneRomagnoli/copy-files-action/blob/main/LICENSE)
+
+## Contributions
+
+If you think there could be useful features that are not yet implemented or bugs that need to be fixed, please:
+
+* Fork the repository;
+* Make the changes you like;
+* Make a pull request so that the feature/bug fix can be merged into this repository.
