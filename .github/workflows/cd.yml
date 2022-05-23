@@ -1,0 +1,16 @@
+name: Compile and Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  compile-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply Semantic Versioning
+        uses: anitvam/conventionalcommit-semantic-releasing@main
+        with:
+          token: ${{ secrets.SR_API_TOKEN_GITHUB }}
